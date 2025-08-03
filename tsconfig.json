@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    // --- Configurações Essenciais ---
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "./dist", // Opcional: para onde os arquivos compilados irão
+    "rootDir": "./src", // Opcional: pasta com o código fonte
+
+    // --- Boas Práticas e Compatibilidade ---
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"] // Quais pastas o TypeScript deve observar
+}
