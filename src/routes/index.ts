@@ -3,6 +3,6 @@ import { helloWorld } from "../controllers/user.controller.js";
 
 const routes = Router();
 
-routes.get("/hello", helloWorld);
+routes.post("/qr", helloWorld);
 
 export default routes;
