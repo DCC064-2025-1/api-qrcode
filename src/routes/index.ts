@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { helloWorld } from "../controllers/user.controller.js";
+import { generateAttendanceQR, helloWorld, registerAttendance } from "../controllers/user.controller.js";
 
 const routes = Router();
 
-routes.post("/qr", helloWorld);
+routes.post("/qr", generateAttendanceQR);
+routes.post("/register", registerAttendance);
 
 export default routes;
