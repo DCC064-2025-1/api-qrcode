@@ -17,7 +17,8 @@ model User {
   id        String   @id @default(uuid())
   matricula String   @unique
   name      String?
-  role      String   @default("USER") // Pode ser "STUDENT" ou "TEACHER"
+  password  String   // Campo de senha
+  role      String   @default("USER") // "STUDENT" ou "TEACHER"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
