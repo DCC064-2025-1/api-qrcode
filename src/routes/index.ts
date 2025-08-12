@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { generateAttendanceQR, helloWorld, registerAttendance } from "../controllers/user.controller.js";
+import { generateAttendanceQR, registerAttendance } from "../controllers/user.controller.js";
 
 const routes = Router();
 

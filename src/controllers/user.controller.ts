@@ -3,36 +3,10 @@ import qrcode from "qrcode";
 import { randomBytes } from "crypto";
 import { prisma } from "../lib/prisma.js";
 
-export async function helloWorld(req: Request, res: Response) {
-  try {
-    const code = "Hello World!";
-
-    try {
-      const qrcodeUrl = await qrcode.toDataURL(code, {
-        errorCorrectionLevel: "H",
-        type: "image/png",
-        margin: 1,
-        color: {
-          dark: "#000000",
-          light: "#FFFFFF",
-        },
-      });
-      res.status(200).json({ qrcodeUrl });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Failed to generate QR code" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
 // "Banco" temporário de tokens em memória
 const attendanceTokens = new Map<string, { courseId: string; expiresAt: Date }>();
 
 export async function generateAttendanceQR(req: Request, res: Response) {
-  console.log("Body recebido:", req.body);
   try {
     const { matricula, password, courseId } = req.body;
 
@@ -41,25 +15,22 @@ export async function generateAttendanceQR(req: Request, res: Response) {
     }
 
     // Validação login professor
-    //const user = await prisma.user.findUnique({ where: { matricula } });
-    //if (!user || user.password !== password || user.role !== "TEACHER") {
-    //  return res.status(401).json({ error: "Credenciais inválidas ou usuário não é professor" });
-    //}
+    const user = await prisma.user.findUnique({ where: { matricula } });
+    if (!user || user.password !== password || user.role !== "TEACHER") {
+     return res.status(401).json({ error: "Credenciais inválidas ou usuário não é professor" });
+    }
 
     // Gera token único
     const token = randomBytes(8).toString("hex");
-
+    console.log(token);
     // Define expiração (5 minutos)
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
     // Armazena token na memória
     attendanceTokens.set(token, { courseId, expiresAt });
 
-    // URL que será embutida no QR
-    const attendanceUrl = `https://localhost:3333/register?token=${token}`;
-
     // Gera QR Code
-    const qrcodeUrl = await qrcode.toDataURL(attendanceUrl, {
+    const qrcodeUrl = await qrcode.toDataURL(token, {
       errorCorrectionLevel: "H",
       type: "image/png",
       margin: 1,

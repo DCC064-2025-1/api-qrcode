@@ -52,6 +52,7 @@ Este comando essencial irá ler seu ```schema.prisma``` e criar o arquivo do ban
 
 ```bash
 npx prisma migrate dev
+npx prisma db seed
 ```
 Ao ser perguntado, dê um nome para a migração (ex: init).
 
